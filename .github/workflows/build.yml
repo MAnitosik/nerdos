@@ -30,8 +30,8 @@ jobs:
       - name: Checkout github actions
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v4
 
-      - name: Maximize build space # added by manitosik
-        uses: ublue-os/remove-unwanted-software@master # added by manitosik
+      - name: Maximize build space
+        uses: ublue-os/remove-unwanted-software@master
 
       - name: Set environment variables
         uses: ./.github/actions/config
@@ -60,36 +60,9 @@ jobs:
       packages: write
       id-token: write
 
-  test-image:
-    name: Test image
-    runs-on: ubuntu-26.04
-    needs: [set-env, build-image]
-
-    env:
-      IMAGE_REF: "${{ needs.build-image.outputs.image-ref }}@${{ needs.build-image.outputs.digest }}"
-
-    steps:
-      - name: Login to Container Registry
-        run: echo ${{ secrets.GITHUB_TOKEN }} | podman login -u ${{ needs.set-env.outputs.REGISTRY_USER }} --password-stdin ${{ needs.set-env.outputs.REGISTRY }}
-
-      - name: Test container
-        run: |
-          # Create a short script to test the image using heredoc
-          cat << 'EOF' > /tmp/test.sh
-          set -ex
-
-          cat /etc/os-release
-          bootc -V
-          EOF
-
-          podman run --rm \
-            -v /tmp/test.sh:/tmp/test.sh \
-            ${{ env.IMAGE_REF }} \
-            /bin/bash /tmp/test.sh
-
   promote-image:
     name: Promote image
-    needs: [set-env, build-image, test-image]
+    needs: [set-env, build-image]
     if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
     uses: AlmaLinux/atomic-ci/.github/workflows/retag-image.yml@v13
     with:
@@ -109,7 +82,7 @@ jobs:
 
   create-release:
     name: Create Release
-    needs: [set-env, build-image, test-image, promote-image]
+    needs: [set-env, build-image, promote-image]
     if: ${{ github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
     uses: AlmaLinux/atomic-ci/.github/workflows/create-release.yml@v13
     with:

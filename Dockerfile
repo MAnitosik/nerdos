@@ -9,14 +9,18 @@ COPY *.pub /keys/
 # Base Image
 FROM ghcr.io/ublue-os/base-main:latest
 
-RUN rm /opt && mkdir /opt # added by manitosik
+# added by manitosik
+RUN rm /opt && mkdir /opt
 
 ARG IMAGE_NAME
 ARG IMAGE_REGISTRY
 ARG VARIANT
 
-RUN --mount=type=tmpfs,dst=/tmp \
-    --mount=type=bind,from=ctx,source=/,target=/ctx \
+# changed by manitosik
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
     /ctx/build_files/build.sh
 
 ### LINTING
