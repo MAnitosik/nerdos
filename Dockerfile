@@ -17,10 +17,8 @@ ARG IMAGE_REGISTRY
 ARG VARIANT
 
 # changed by manitosik
-RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
-    --mount=type=cache,dst=/var/cache \
-    --mount=type=cache,dst=/var/log \
-    --mount=type=tmpfs,dst=/tmp \
+RUN --mount=type=tmpfs,dst=/tmp \
+    --mount=type=bind,from=ctx,source=/,target=/ctx \
     /ctx/build_files/build.sh
 
 ### LINTING
