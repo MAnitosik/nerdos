@@ -9,14 +9,13 @@ COPY *.pub /keys/
 # Base Image
 FROM ghcr.io/ublue-os/base-main:latest
 
-RUN rm /opt && mkdir /opt
+RUN rm /opt && mkdir /opt # added by manitosik
 
 ARG IMAGE_NAME
 ARG IMAGE_REGISTRY
 ARG VARIANT
 
-RUN --mount=type=tmpfs,dst=/opt \
-    --mount=type=tmpfs,dst=/tmp \
+RUN --mount=type=tmpfs,dst=/tmp \
     --mount=type=bind,from=ctx,source=/,target=/ctx \
     /ctx/build_files/build.sh
 

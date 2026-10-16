@@ -54,6 +54,7 @@ dnf5 -y swap zram-generator-defaults cachyos-settings
 
 dnf5 -y remove firefox
 dnf5 -y autoremove
+dnf5 -y clean all
 
 systemctl enable cosmic-greeter
 systemctl enable lactd

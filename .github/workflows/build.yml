@@ -27,11 +27,11 @@ jobs:
       IMAGE_NAME: ${{ steps.set.outputs.IMAGE_NAME }}
       IMAGE_REF: ${{ steps.set.outputs.IMAGE_REF }}
     steps:
-      - name: Maximize build space # added by manitosik
-        uses: ublue-os/remove-unwanted-software@master # added by manitosik
-
       - name: Checkout github actions
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v4
+
+      - name: Maximize build space # added by manitosik
+        uses: ublue-os/remove-unwanted-software@master # added by manitosik
 
       - name: Set environment variables
         uses: ./.github/actions/config
