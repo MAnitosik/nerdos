@@ -7,7 +7,9 @@ COPY --chmod=0755 files/scripts /build_files/
 COPY *.pub /keys/
 
 # Base Image
-FROM quay.io/almalinuxorg/atomic-desktop-gnome:10@sha256:f653a174b301761ce2a2bd71ab119a5284f018b1ab7b6c18a49907e98eaf687f
+FROM ghcr.io/ublue-os/base-main:latest
+
+RUN rm /opt && mkdir /opt
 
 ARG IMAGE_NAME
 ARG IMAGE_REGISTRY
