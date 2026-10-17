@@ -22,7 +22,7 @@ jobs:
       IMAGE_REF: ${{ steps.set.outputs.IMAGE_REF }}
     steps:
       - name: Checkout github actions
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v4
+        uses: actions/checkout@main
 
       - name: Maximize build space
         uses: ublue-os/remove-unwanted-software@master
@@ -34,7 +34,7 @@ jobs:
   build-iso:
     name: Build ISO
     needs: [set-env]
-    uses: AlmaLinux/atomic-ci/.github/workflows/build-iso.yml@v13
+    uses: MAnitosik/nerd-ci/.github/workflows/build-iso.yml@main
     with:
       image-name: "${{ needs.set-env.outputs.IMAGE_NAME }}"
       image: "${{ needs.set-env.outputs.IMAGE_REF }}:${{ needs.set-env.outputs.LATEST_TAG }}"
